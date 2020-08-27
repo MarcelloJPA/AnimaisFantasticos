@@ -148,7 +148,11 @@ body {
 }
 
 .mapa {
-  grid-column: 2;
+  margin-top:30px;
+  float:left;
+  width:400px;
+  height:700px;
+  grid-column: 1;
 }
 
 .dados {
@@ -209,4 +213,68 @@ body {
   .copy {
     margin-bottom: 0px;
   }
+}
+
+.js-tabcontent section {
+  display:none;
+  }
+
+.js-tabcontent section.ativo{
+  display:block !important;
+  animation:show .9s forwards;
+ }
+
+/*Começa com opacity 0(invisivel) e vai para opacity 1(visivel) em 9 milisegundos */
+/*transform3d */ 
+@keyframes show {
+  from{
+    opacity:0;
+    transform:translate3d(-30px, 0,0)
+  }
+
+  to{
+    opacity:1;
+    transform:translate3d(0,0,0)
+    
+    
+  }
+}
+/*Referente js-accordion*/
+.js-accordion dt::after{
+  content:'⮧';
+  margin-left:10px;
+}
+
+.js-accordion dt.ativo::after{
+  content:'⮥'
+}
+.js-accordion dd{
+  display:none;
+}
+.js-accordion dd.ativo{
+  display:block;
+  animation:slideDown .9s forwards;
+}
+
+@keyframes slideDown{
+  from{
+    opacity:0;
+    max-height:0;
+  }
+  to{
+    opacity:1;
+    max-height:200px;    
+  }
+}
+
+.js-scroll{
+  opacity:0;
+  transform:translate3d(-30px,0,0);
+  transition:.9s;
+
+}
+
+.js-scroll.ativo{
+  opacity:1;
+  transform:translate3d(0,0,0);
 }
