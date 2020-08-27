@@ -1,25 +1,106 @@
-// Seleciona pelo ID  //Retorna null caso nao exista
-const animais = document.getElementById('animais');
-console.log('Retornando pelo Id', animais);
+/*Função que muda a classe ativo das sections de acordo com click na imagem,como padrão 
+as sections estão como "display:none" com a classe ativo mudam para "display:block" 
+com efeitos keyframes*/
+function textoAnimais() {
+  const tabMenu = document.querySelectorAll('.js-tabmenu li');
+  const tabContent = document.querySelectorAll('.js-tabcontent section');
 
-// Seleciona pela Classe, retorna uma HTMLCollection
-const gridSection = document.getElementsByClassName('grid-section');
-console.log('Retornando pela ClassName', gridSection);
-console.log('Retornando o 2º da do HTMLColletion', gridSection[1]);
+  if (tabMenu.length && tabContent.length) {
+    tabContent[0].classList.add('ativo');
 
-// Seleciona todas as ul's, Retorna uma HTMLCollection
-const ul = document.getElementsByTagName('ul');
-console.log('Retornando pela TagName', ul);
+    function activeTab(index) {
+      tabContent.forEach((section) => {
+        section.classList.remove('ativo');
+      });
+      tabContent[index].classList.add('ativo');
+    }
 
-//Seleciona a primeira li do html
-const primeiraLi = document.querySelector('li');
-console.log('Retornando a 1º li', primeiraLi);
+    tabMenu.forEach((itemMenu, index) => {
+      itemMenu.addEventListener('click', () => {
+        activeTab(index);
+      });
+    });
+  }
+}
 
-//Seleciona o primeiro link que começa com '#'
-const linkInterno = document.querySelector('[href^="#"]');
-console.log('Retornando o 1ºlink interno', linkInterno);
+/*Função por padrão ja habilita o 1ºdt e dd como ativo, faz um forEach em todos os "dt"
+e passa um evento de click em cada que chama a função "activeAccordion"
+que adiciona uma classe ao "item" com o this, o nextElementSibling pega 
+o proximo elemento e para ser adicionado a classe ativo, 
+os efeitos estao no CSS*/
+function accordionList() {
+  const accordionList = document.querySelectorAll('.js-accordion dt')
+  if (accordionList.length) {
 
-//Seleciona uma NodeList de todas imgs que estao dentro da classe animais
-const animaisImg = document.querySelectorAll('.animais img');
-console.log('Retornando todas img da classe animaiss', animaisImg);
-console.log('Retornando a 4º imagem da NodeList', animaisImg[3]); //Seleciona a 4ºImagem da NodeList
+    accordionList[0].classList.add('ativo')
+    accordionList[0].nextElementSibling.classList.add('ativo')
+
+    function activeAccordion(event) {
+      // o this faz referecia ao item que foi clicado
+      this.classList.toggle('ativo')
+      this.nextElementSibling.classList.toggle('ativo')
+    }
+
+
+    accordionList.forEach((item) => {
+      item.addEventListener('click', activeAccordion)
+    })
+  }
+}
+/* FIM DO ACCORDIONLIST */
+
+
+/* Função pega todas os links internos, executa um forEach e adiciona um evento de click 
+chamando a função "scrollToSection", o preventDefault previne que os links funcionem por padrao
+pega o atributo "href" que esta na propriedade currentTarget do evento= Exemplo "#animais",
+ assim com o document.querySelector(#animais) ele retorna toda a section  podendo deslizar com o scrollIntoView*/
+
+function initScrollSuave() {
+  const linksInternos = document.querySelectorAll('.js-menu a[href^="#"]')
+  function scrollToSection(event) {
+    event.preventDefault();
+    const href = event.currentTarget.getAttribute('href')
+    const section = document.querySelector(href)
+
+    section.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+  linksInternos.forEach((link) => {
+    link.addEventListener('click', scrollToSection)
+  })
+}
+/*=======================================================*/
+
+function initAnimacaoScroll() {
+  const sections = document.querySelectorAll('.js-scroll');
+  if (sections.length) {
+    const windowMetade = window.innerHeight * 0.6;
+
+    function animaScroll() {
+      sections.forEach((section) => {
+        const sectionTop = section.getBoundingClientRect().top;
+        const isSectionVisible = (sectionTop - windowMetade < 0); // true ou false
+
+        if (isSectionVisible) { section.classList.add('ativo') }
+      })
+    }
+  }
+  window.addEventListener('scroll', animaScroll)
+
+  animaScroll() //Iniar pelo menos uma vez para nao ficar vazio
+
+}
+
+
+
+
+
+
+
+//Executa funções no escopo global
+textoAnimais()
+accordionList()
+initScrollSuave()
+initAnimacaoScroll()
